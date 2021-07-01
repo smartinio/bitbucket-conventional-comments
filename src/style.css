@@ -1,0 +1,47 @@
+#bbcc-toolbar {
+    display: flex;
+}
+
+#bbcc-toolbar .bbcc-container {
+    display: flex;
+    flex-direction: row;
+    width: 36px;
+    overflow: hidden;
+    transition: width 0.3s;
+}
+
+#bbcc-toolbar .bbcc-container.bbcc-has-blocking:hover {
+    width: 72px;
+}
+
+#bbcc-toolbar .bbcc-button {
+    background: transparent;
+    border: none;
+    color: #42526e;
+    outline: 0;
+    cursor: pointer;
+    width: 36px;
+    height: 32px;
+    justify-content: center;
+    display: flex;
+}
+
+#bbcc-toolbar .bbcc-button svg {
+    height: 16px;
+    width: 16px;
+}
+
+#bbcc-toolbar .bbcc-button:hover {
+    color: #1068bf;
+    background-color: #ecedf0;
+}
+
+#bbcc-toolbar .bbcc-button:focus {
+    outline: 0;
+    color: #0252cb;
+    background-color: #d2e5ff;
+}
+
+#bbcc-toolbar .bbcc-button.bbcc-blocking path {
+    color: red;
+}

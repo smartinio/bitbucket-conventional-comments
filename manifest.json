@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Bitbucket Conventional Comments",
+  "description": "Adds conventional comment shortcuts to the comment editor.",
+  "version": "0.0.1",
+  "content_scripts": [
+    {
+      "matches": ["*://*/**/*/pull-requests/*"],
+      "css": ["src/style.css"],
+      "js": ["src/index.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": ["*://*/*"],
+      "resources": ["src/*"]
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/index.html",
+    "default_icon": {
+      "16": "icons/16.png",
+      "48": "icons/48.png",
+      "128": "icons/128.png"
+    }
+  },
+  "permissions": ["clipboardRead", "clipboardWrite", "storage"],
+  "host_permissions": ["*://*/*"]
+}
