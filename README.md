@@ -1,4 +1,5 @@
 # bitbucket-conventional-comments
+![](preview.gif)
 
 ### What is this?
 Quality of life Chrome extension for teams/people who use [conventional comments.](https://conventionalcomments.org) Adds buttons for automatically inserting conventional comment headers to your message.
