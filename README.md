@@ -1,11 +1,11 @@
 # bitbucket-conventional-comments
+Based on [this extension](https://gitlab.com/conventionalcomments/conventional-comments-button/-/tree/master
+) for Gitlab. Adapted to Bitbucket.
+
 ![](preview.gif)
 
 ### What is this?
 Quality of life Chrome extension for teams/people who use [conventional comments.](https://conventionalcomments.org) Adds buttons for automatically inserting conventional comment headers to your message.
-
-Based on [this extension](https://gitlab.com/conventionalcomments/conventional-comments-button/-/tree/master
-) for Gitlab. Adapted to Bitbucket.
   
 The [original license](https://gitlab.com/conventionalcomments/conventional-comments-button/-/blob/master/LICENSE) is MIT.
 
