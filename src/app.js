@@ -1,7 +1,13 @@
 import { semanticLabels } from './labels.js'
 import { selectors, classes, ids } from './selectors.js'
 import { state } from './state.js'
-import { copyToClipboard, setCursorPosition } from './utils.js'
+import {
+  copyToClipboard,
+  setCursorPosition,
+  getConventionalCommentPrefix,
+  createClipboardReset,
+  selectMatchingTextNode,
+} from './utils.js'
 import { warnAboutUnconventionalComments } from './features/warnAboutUnconventionalComments.js'
 
 const createClickHandler = ({ contentEditable, label, blocking }) => {
@@ -10,9 +16,18 @@ const createClickHandler = ({ contentEditable, label, blocking }) => {
     const semanticConfig = semanticLabels[label]
     const decoration = blocking || !semanticConfig.hasBlockingOption ? '' : ' (non-blocking)'
     const semanticComment = `**${semanticConfig.text}${decoration}:** `
+    const currentPrefix = getConventionalCommentPrefix(contentEditable.innerText)
+    const resetClipboard = await createClipboardReset()
 
-    const resetClipboard = await copyToClipboard(semanticComment)
-    setCursorPosition(contentEditable, 'start')
+    if (currentPrefix) {
+      // trimming because the existing textNode in the DOM does not contain the space
+      selectMatchingTextNode(contentEditable, currentPrefix.trim())
+      await copyToClipboard(semanticComment.trim())
+    } else {
+      setCursorPosition(contentEditable, 'start')
+      await copyToClipboard(semanticComment)
+    }
+
     document.execCommand('paste')
     setCursorPosition(contentEditable, 'end')
     await resetClipboard()
