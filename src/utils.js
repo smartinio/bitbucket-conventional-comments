@@ -1,20 +1,50 @@
-export const copyToClipboard = async (text) => {
+import { semanticLabels } from './labels.js'
+
+const validPrefixes = Object.values(semanticLabels).flatMap(({ text }) => [
+  `**${text}:** `,
+  `**${text} (non-blocking):** `,
+])
+
+export const getConventionalCommentPrefix = (comment) => {
+  for (const validPrefix of validPrefixes) {
+    if (comment.startsWith(validPrefix)) {
+      return validPrefix
+    }
+  }
+}
+
+export const createClipboardReset = async () => {
   let resetClipboard = async () => {}
-  
+
   const readPermission = await navigator.permissions.query({ name: 'clipboard-read' })
   if (['granted', 'prompt'].includes(readPermission.state)) {
     const previousClipboard = await navigator.clipboard.readText()
     resetClipboard = async () => navigator.clipboard.writeText(previousClipboard)
   }
-  
+
+  return resetClipboard
+}
+
+export const copyToClipboard = async (text) => {
   const writePermission = await navigator.permissions.query({ name: 'clipboard-write' })
   if (['granted', 'prompt'].includes(writePermission.state)) {
     await navigator.clipboard.writeText(text)
   } else {
     throw new Error('Failed to copy text: ' + text)
   }
-  
-  return resetClipboard
+}
+
+export const selectMatchingTextNode = (contentEditable, text) => {
+  const span = contentEditable.querySelector('pre span.cm-m-markdown.cm-strong')
+  if (span.innerText !== text) {
+    return
+  }
+  const textNode = _findTextNode(span.childNodes)
+  const range = document.createRange()
+  const selection = window.getSelection()
+  range.selectNode(textNode)
+  selection.removeAllRanges()
+  selection.addRange(range)
 }
 
 export const setCursorPosition = (contentEditable, position) => {
