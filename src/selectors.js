@@ -5,6 +5,7 @@ export const ids = {
 export const classes = {
   bitbucket: {
     reply: 'comment-editor-reply',
+    edit: 'comment-editor-edit-comment',
   },
   bbcc: {
     blocking: 'bbcc-blocking',
