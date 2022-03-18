@@ -60,7 +60,7 @@ const createButton = ({ contentEditable, toolbar, container, label, blocking }) 
   container.appendChild(buttonWrapper)
 }
 
-const createButtonPair = ({ contentEditable, toolbar, label }) => {
+const createButtonPair = ({ contentEditable, toolbar, ccToolbar, label }) => {
   const container = document.createElement('div')
   container.classList.add(classes.bbcc.container)
   createButton({ contentEditable, toolbar, container, label, blocking: false })
@@ -80,16 +80,25 @@ const createButtonPair = ({ contentEditable, toolbar, label }) => {
     }
   })
 
-  toolbar.appendChild(container)
+  ccToolbar.appendChild(container)
+}
+
+const createCCToolbar = ({ controls, editorWrapper, cancelButton }) => {
+  const ccToolbar = document.createElement('div')
+  ccToolbar.id = ids.ccToolbar
+  editorWrapper.insertBefore(ccToolbar, controls)
+  cancelButton.onclick = () => ccToolbar.remove()
+  return ccToolbar
 }
 
 const addSemanticButtons = (contentEditable) => {
   const editorWrapper = contentEditable.closest(selectors.editorWrapper)
   const controls = editorWrapper.querySelector(selectors.controls)
   const toolbar = editorWrapper.querySelector(selectors.toolbar)
-  toolbar.id = ids.ccToolbar
+  const cancelButton = editorWrapper.querySelector(selectors.cancelButton)
+  const ccToolbar = createCCToolbar({ controls, editorWrapper, cancelButton })
   Object.keys(semanticLabels).forEach((label) => {
-    createButtonPair({ contentEditable, toolbar, label })
+    createButtonPair({ contentEditable, toolbar, ccToolbar, label })
   })
   warnAboutUnconventionalComments({ controls, contentEditable })
 }
