@@ -10,6 +10,9 @@ Quality of life Chrome extension for teams/people who use [conventional comments
 The [original license](https://gitlab.com/conventionalcomments/conventional-comments-button/-/blob/master/LICENSE) is MIT.
 
 ### Installation
+Available via the [Chrome Web Store.](https://chrome.google.com/webstore/detail/bitbucket-conventional-co/ahbhljoncimmieljhlkkeifohkigiefa)
+
+#### From source
 1. Clone this repository
 2. Go to your chrome extensions (enter `chrome://extensions/` in the address bar)
 3. Toggle Developer mode (on the right top corner)
