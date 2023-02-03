@@ -48,10 +48,12 @@ const createButton = ({ contentEditable, toolbar, container, label, blocking }) 
   const semanticConfig = semanticLabels[label]
 
   if (blocking) {
-    button.title = `${semanticConfig.text} (blocking)`
+    button.title = `${semanticConfig.text} (blocking) : ${semanticConfig.description}`
+    button.alt = `${semanticConfig.text} (blocking) : ${semanticConfig.description}`
     button.classList.add(classes.bbcc.blocking)
   } else {
-    button.title = semanticConfig.text
+    button.title = `${semanticConfig.text} : ${semanticConfig.description}`
+    button.alt = `${semanticConfig.text} : ${semanticConfig.description}`
   }
 
   button.addEventListener('click', handleClick)
