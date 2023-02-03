@@ -1,0 +1,12 @@
+name: Ping
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 13 1 * *'
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -s -S -f -d "client_id=${{ secrets.CLIENT_ID }}&client_secret=${{ secrets.CLIENT_SECRET }}&refresh_token=${{ secrets.REFRESH_TOKEN }}&grant_type=refresh_token&redirect_uri=urn:ietf:wg:oauth:2.0:oob" "https://accounts.google.com/o/oauth2/token"
