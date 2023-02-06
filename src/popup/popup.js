@@ -40,7 +40,7 @@ const setup = async () => {
     const toggleContainer = document.createElement('div')
     const iconContainer = document.createElement('div')
     const labelContainer = document.createElement('span')
-    const checkbox = await createCheckbox({ label, defaultValue: true })
+    const checkbox = await createCheckbox({ label, defaultValue: config.defaultValue })
 
     iconContainer.innerHTML = config.icon
     labelContainer.innerText = label
