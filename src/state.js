@@ -7,6 +7,11 @@ export const state = {
       chrome.storage.sync.get(key, (result) => resolve(result[key]))
     })
   },
+  async getAll() {
+    return new Promise((resolve) => {
+      chrome.storage.sync.get(null,(result) => resolve(result))
+    })
+  },
   subscribe(value, notify) {
     state.get(value).then(notify)
 
