@@ -1,16 +1,12 @@
 import { semanticLabels } from './labels.js'
 
-const validPrefixes = Object.values(semanticLabels).flatMap(({ text }) => [
-  `**${text}:** `,
-  `**${text} (non-blocking):** `,
-])
+const labels = Object.values(semanticLabels).map(({ text }) => text).join('|');
+const regex = `^(\\*\\*(${labels})(\\s\\(.*\\))?:\\*\\* )(.*)$`;
 
 export const getConventionalCommentPrefix = (comment) => {
-  for (const validPrefix of validPrefixes) {
-    if (comment.startsWith(validPrefix)) {
-      return validPrefix
-    }
-  }
+  const regexObj = new RegExp(regex, '');
+  let regExpExecArray = regexObj.exec(comment);
+  return regExpExecArray?.at(1) || '';
 }
 
 export const createClipboardReset = async () => {
