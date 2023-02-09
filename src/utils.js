@@ -4,7 +4,7 @@ const labels = Object.values(semanticLabels).map(({ text }) => text).join('|');
 const regex = `^(\\*\\*(${labels})(\\s\\(.*\\))?:\\*\\* )(.*)$`;
 
 export const getConventionalCommentPrefix = (comment) => {
-  const regexObj = new RegExp(regex, '');
+  const regexObj = new RegExp(regex, 'gmi');
   let regExpExecArray = regexObj.exec(comment);
   return regExpExecArray?.at(1) || '';
 }
