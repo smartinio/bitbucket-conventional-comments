@@ -85,11 +85,13 @@ const createButtonPair = ({ contentEditable, toolbar, ccToolbar, label }) => {
   ccToolbar.appendChild(container)
 }
 
-const createCCToolbar = ({ controls, editorWrapper, cancelButton }) => {
+const createCCToolbar = ({ controls, editorWrapper, cancelButton, nonCancelButtons }) => {
   const ccToolbar = document.createElement('div')
   ccToolbar.id = ids.ccToolbar
   editorWrapper.insertBefore(ccToolbar, controls)
-  cancelButton.onclick = () => ccToolbar.remove()
+  if (cancelButton) cancelButton.onclick = () => ccToolbar.remove();
+  if (nonCancelButtons) nonCancelButtons.forEach((el) => el.addEventListener('click', () => ccToolbar.remove()))
+
   return ccToolbar
 }
 
@@ -98,7 +100,8 @@ const addSemanticButtons = (contentEditable) => {
   const controls = editorWrapper.querySelector(selectors.controls)
   const toolbar = editorWrapper.querySelector(selectors.toolbar)
   const cancelButton = editorWrapper.querySelector(selectors.cancelButton)
-  const ccToolbar = createCCToolbar({ controls, editorWrapper, cancelButton })
+  const nonCancelButtons = controls.querySelectorAll(selectors.nonCancelButton)
+  const ccToolbar = createCCToolbar({ controls, editorWrapper, cancelButton, nonCancelButtons })
   Object.keys(semanticLabels).forEach((label) => {
     createButtonPair({ contentEditable, toolbar, ccToolbar, label })
   })
