@@ -2,17 +2,7 @@
     display: flex;
 }
 
-#bbcc-toolbar .bbcc-container {
-    display: flex;
-    flex-direction: row;
-    width: 36px;
-    overflow: hidden;
-    transition: width 0.3s;
-}
 
-#bbcc-toolbar .bbcc-container.bbcc-has-blocking:hover {
-    width: 72px;
-}
 
 #bbcc-toolbar .bbcc-button {
     background: transparent;
@@ -20,7 +10,7 @@
     color: #42526e;
     outline: 0;
     cursor: pointer;
-    width: 36px;
+   /* width: 36px;*/
     height: 32px;
     justify-content: center;
     display: flex;
@@ -45,3 +35,57 @@
 #bbcc-toolbar .bbcc-button.bbcc-blocking path {
     color: red;
 }
+
+
+
+
+#bbcc-toolbar .bbcc-container .bbcc-button:hover:after {
+    opacity: 0.9;
+    transition: all 0.1s ease 0.5s;
+    visibility: visible;
+}
+
+#bbcc-toolbar .bbcc-container .bbcc-button:after {
+    content: attr(data-title);
+    background-color: #212221;
+    color: #fff;
+    font-size: 18px;
+    position: absolute;
+    padding: 1px 5px 2px 5px;
+    line-height: 18px;
+    bottom: 34px;
+    left: -4px;
+    white-space: pre-wrap;
+    box-shadow: 1px 1px 3px #8b8888;
+    opacity: 0;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    z-index: 99999;
+    visibility: hidden;
+    width: 600px
+}
+
+#bbcc-toolbar .bbcc-container.bbcc-has-blocking {
+    width: 30px;
+    display: block !important;
+    overflow: hidden;
+    height: 30px;
+}
+
+#bbcc-toolbar .bbcc-container .bbcc-button {
+    width: 32px;
+    display: block;
+    padding-left: 6px;
+}
+
+#bbcc-toolbar .bbcc-container.bbcc-has-blocking:hover {
+    width: 64px;
+    display: inline-block !important;
+    overflow: visible;
+}
+
+#bbcc-toolbar .bbcc-container.bbcc-has-blocking:hover .bbcc-button {
+    display: inline-block
+}
+
+
