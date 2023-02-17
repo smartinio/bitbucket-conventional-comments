@@ -1,11 +1,17 @@
 import { semanticLabels } from './labels.js'
 
 const labels = Object.values(semanticLabels).map(({ text }) => text).join('|');
-const regex = `^(\\*\\*(${labels})(\\s\\(.*\\))?:\\*\\* )(.*)$`;
+const regex = `^(\\*\\*(${labels})(?:\\s\\(.*\\))?:\\*\\* )(.*)$`; // ^\*\*(praise|nitpick|suggestion|issue|todo|question|thought|chore|note)(?:\s?\(([\w\s,]+)\))?:\*\*\s(.*)$
 
-export const getConventionalCommentPrefix = (comment) => {
+
+function getConventionalCommentPart(comment) {
   const regexObj = new RegExp(regex, 'gmi');
   let regExpExecArray = regexObj.exec(comment);
+  return regExpExecArray;
+}
+
+export const getConventionalCommentPrefix = (comment) => {
+  let regExpExecArray = getConventionalCommentPart(comment);
   return regExpExecArray?.at(1) || '';
 }
 

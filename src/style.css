@@ -38,6 +38,41 @@
 
 
 
+#bbcc-toolbar ul.checkbox-list {
+    list-style: none;
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    line-height: 2em;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+
+#bbcc-toolbar ul.checkbox-list p {
+    display: inline-block;
+    padding: 0 0.5em;
+}
+
+#bbcc-toolbar li.checkbox-item {
+    margin: 0;
+    display: inline-block;
+    padding: 0;
+    cursor: pointer;
+}
+
+#bbcc-toolbar li.checkbox-item label {
+    cursor: pointer;
+}
+
+#bbcc-toolbar ul.checkbox-list input[type="checkbox"] {
+    width: 0.8em;
+    height: 0.8em;
+    margin: 0.4em 0.2em 0 0.1em;
+}
+
+
+
 
 #bbcc-toolbar .bbcc-container .bbcc-button:hover:after {
     opacity: 0.9;
