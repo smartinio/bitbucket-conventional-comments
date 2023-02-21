@@ -1,20 +1,19 @@
-import { semanticLabels } from './labels.js'
-import { selectors, classes, ids } from './selectors.js'
-import { state } from './state.js'
+import {semanticLabels} from './labels.js'
+import {classes, ids, selectors} from './selectors.js'
+import {state} from './state.js'
 import {
   copyToClipboard,
-  setCursorPosition,
+  createClipboardReset, getConventionalCommentPart,
   getConventionalCommentPrefix,
-  createClipboardReset,
   selectMatchingTextNode,
+  setCursorPosition,
 } from './utils.js'
-import { warnAboutUnconventionalComments } from './features/warnAboutUnconventionalComments.js'
-import {DECORATORS_SELECTOR} from "./settings.js";
+import {warnAboutUnconventionalComments} from './features/warnAboutUnconventionalComments.js'
+import {DECORATORS_SELECTOR, LIST_DECORATORS} from "./settings.js";
 
 let LabelTextElement;
 let curentLabel = 'suggestion';
 const decoratorsList = [];
-const LIST_DECORATORS = ['non-blocking', 'blocking', 'if-minor', 'todo-later','test', 'ui'];
 let listDecoratorElement;
 
 async function updateConventionCommentOnTextBox(contentEditable) {
@@ -45,7 +44,10 @@ const createClickHandler = ({ contentEditable, label, blocking }) => {
     e.preventDefault()
     updateCurentLabel(label);
     const semanticConfig = semanticLabels[curentLabel];
-    addDecorator(blocking || !semanticConfig.hasBlockingOption ? 'blocking' : 'non-blocking');
+    if (semanticConfig.hasBlockingOption) {
+      addDecorator(blocking ? 'blocking' : 'non-blocking');
+    }
+
 
     if (await state.get(DECORATORS_SELECTOR)) {
       showHideDecoratorList(true);
@@ -151,6 +153,7 @@ const createCheckbox = (decorator,contentEditable)  => {
   checkbox.type = "checkbox";
   checkbox.value = decorator;
   checkbox.id = decorator + "_checkbox";
+  checkbox.checked = hasDecorator(decorator);
   checkbox.addEventListener("change", async function () {
     if (this.checked) {
       addDecorator(decorator);
@@ -177,6 +180,11 @@ const createCheckboxList = (item, contentEditable) => {
   listDecoratorElement = document.createElement("ul");
   listDecoratorElement.classList.add("checkbox-list");
 
+  const currentComment = getConventionalCommentPart(contentEditable.innerText);
+  if (currentComment && currentComment.at(2)) {
+    curentLabel = currentComment.at(2);
+    currentComment.at(3).split(',').forEach(addDecorator);
+  }
   let textElement = createLabelElement(curentLabel);
   listDecoratorElement.appendChild(textElement);
 
@@ -230,7 +238,7 @@ function handleDecoratorsExceptions(decorator) {
 }
 
 const addDecorator = (decorator) => {
-  if (!decoratorsList.includes(decorator)) {
+  if (!hasDecorator(decorator)) {
     decoratorsList.push(decorator);
     updateCheckbox(decorator, true);
   }
@@ -238,9 +246,10 @@ const addDecorator = (decorator) => {
 };
 
 
+const hasDecorator = decorator => !!decoratorsList.includes(decorator);
 
 const removeDecorator = (decorator) => {
-  if (decoratorsList.includes(decorator)) {
+  if (hasDecorator(decorator)) {
     decoratorsList.splice(decoratorsList.indexOf(decorator), 1);
     updateCheckbox(decorator, false);
   }

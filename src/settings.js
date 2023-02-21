@@ -11,3 +11,6 @@ export const settings = {
     defaultValue: true,
   },
 }
+
+
+export const LIST_DECORATORS = ['non-blocking', 'blocking', 'if-minor', 'todo-later', 'test', 'ui'];
