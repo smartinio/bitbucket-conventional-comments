@@ -9,11 +9,13 @@ import {
   selectMatchingTextNode,
 } from './utils.js'
 import { warnAboutUnconventionalComments } from './features/warnAboutUnconventionalComments.js'
+import {DECORATORS_SELECTOR} from "./settings.js";
 
 let LabelTextElement;
-let curentLabel;
+let curentLabel = 'suggestion';
 const decoratorsList = [];
-const LIST_DECORATORS = ['non-blocking', 'blocking', 'if-minor', 'test', 'ui'];
+const LIST_DECORATORS = ['non-blocking', 'blocking', 'if-minor', 'todo-later','test', 'ui'];
+let listDecoratorElement;
 
 async function updateConventionCommentOnTextBox(contentEditable) {
   const semanticConfig = semanticLabels[curentLabel]
@@ -45,6 +47,10 @@ const createClickHandler = ({ contentEditable, label, blocking }) => {
     const semanticConfig = semanticLabels[curentLabel];
     addDecorator(blocking || !semanticConfig.hasBlockingOption ? 'blocking' : 'non-blocking');
 
+    if (await state.get(DECORATORS_SELECTOR)) {
+      showHideDecoratorList(true);
+    }
+
 
     await updateConventionCommentOnTextBox(contentEditable);
   }
@@ -64,8 +70,8 @@ const createButton = ({ contentEditable, toolbar, container, label, blocking }) 
   const semanticConfig = semanticLabels[label]
 
   if (blocking) {
-    button.setAttribute('data-title', `${semanticConfig.text}: ${semanticConfig.description}`);
-    button.setAttribute('alt', `${semanticConfig.text}: ${semanticConfig.description}`);
+    button.setAttribute('data-title', `${semanticConfig.text} (blocking): ${semanticConfig.description}`);
+    button.setAttribute('alt', `${semanticConfig.text} (blocking): ${semanticConfig.description}`);
     button.classList.add(classes.bbcc.blocking)
   } else {
     button.setAttribute('data-title', `${semanticConfig.text} (non-blocking): ${semanticConfig.description}`);
@@ -111,6 +117,13 @@ const createCCToolbar = ({ controls, editorWrapper, cancelButton, nonCancelButto
   return ccToolbar
 }
 
+const showHideDecoratorList = shouldShow => {
+  if (shouldShow) {
+    listDecoratorElement.style.display = 'flex'
+  } else {
+    listDecoratorElement.style.display = 'none'
+  }
+};
 
 const addSemanticButtons = (contentEditable) => {
   const editorWrapper = contentEditable.closest(selectors.editorWrapper)
@@ -123,9 +136,12 @@ const addSemanticButtons = (contentEditable) => {
     createButtonPair({ contentEditable, toolbar, ccToolbar, label })
   });
 
-  ccToolbar.appendChild(createCheckboxList(LIST_DECORATORS, contentEditable))
+  ccToolbar.appendChild(createCheckboxList(LIST_DECORATORS, contentEditable));
+
   warnAboutUnconventionalComments({ controls, contentEditable })
-}
+};
+
+
 
 const createCheckbox = (decorator,contentEditable)  => {
   let listItem = document.createElement("li");
@@ -151,28 +167,43 @@ const createCheckbox = (decorator,contentEditable)  => {
   listItem.appendChild(checkbox);
   listItem.appendChild(label);
 
+
   return listItem;
 };
 
+
+
 const createCheckboxList = (item, contentEditable) => {
-  let list = document.createElement("ul");
-  list.classList.add("checkbox-list");
+  listDecoratorElement = document.createElement("ul");
+  listDecoratorElement.classList.add("checkbox-list");
 
-  let textElement = createLabelElement("Label");
-  list.appendChild(textElement);
+  let textElement = createLabelElement(curentLabel);
+  listDecoratorElement.appendChild(textElement);
 
-  list.appendChild(document.createTextNode("("));
+  listDecoratorElement.appendChild(document.createTextNode("("));
   LIST_DECORATORS.forEach(function(item, index) {
     let checkbox = createCheckbox(item, contentEditable);
-    list.appendChild(checkbox);
+    listDecoratorElement.appendChild(checkbox);
     if (index < LIST_DECORATORS.length - 1) {
-      list.appendChild(document.createTextNode(", "));
+      listDecoratorElement.appendChild(document.createTextNode(", "));
     }
   });
-  list.appendChild(document.createTextNode(")"));
+  listDecoratorElement.appendChild(document.createTextNode(")"));
 
-  return list;
+
+
+  const unsubscribe = state.subscribe(DECORATORS_SELECTOR, (shouldShow = true) => {
+    if (!listDecoratorElement.isConnected) {
+      unsubscribe()
+    } else {
+      showHideDecoratorList(shouldShow);
+    }
+  });
+
+  return listDecoratorElement;
 };
+
+
 
 
 const createLabelElement = text => {
