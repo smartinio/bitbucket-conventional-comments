@@ -9,7 +9,7 @@ import {
   setCursorPosition,
 } from './utils.js'
 import {warnAboutUnconventionalComments} from './features/warnAboutUnconventionalComments.js'
-import {DECORATORS_SELECTOR, LIST_DECORATORS} from "./settings.js";
+import {DECORATORS_LIST_ID, DECORATORS_SELECTOR, LIST_DECORATORS} from "./settings.js";
 
 let LabelTextElement;
 let curentLabel = 'suggestion';
@@ -127,20 +127,21 @@ const showHideDecoratorList = shouldShow => {
   }
 };
 
-const addSemanticButtons = (contentEditable) => {
+const addSemanticButtons = async (contentEditable) => {
   const editorWrapper = contentEditable.closest(selectors.editorWrapper)
   const controls = editorWrapper.querySelector(selectors.controls)
   const toolbar = editorWrapper.querySelector(selectors.toolbar)
   const cancelButton = editorWrapper.querySelector(selectors.cancelButton)
   const nonCancelButtons = controls.querySelectorAll(selectors.nonCancelButton)
-  const ccToolbar = createCCToolbar({ controls, editorWrapper, cancelButton, nonCancelButtons })
+  const ccToolbar = createCCToolbar({controls, editorWrapper, cancelButton, nonCancelButtons})
   Object.keys(semanticLabels).forEach((label) => {
-    createButtonPair({ contentEditable, toolbar, ccToolbar, label })
+    createButtonPair({contentEditable, toolbar, ccToolbar, label})
   });
 
-  ccToolbar.appendChild(createCheckboxList(LIST_DECORATORS, contentEditable));
+  const listDecorator = await state.get(DECORATORS_LIST_ID);
+  ccToolbar.appendChild(createCheckboxList(listDecorator.split(','), contentEditable));
 
-  warnAboutUnconventionalComments({ controls, contentEditable })
+  warnAboutUnconventionalComments({controls, contentEditable})
 };
 
 
@@ -176,7 +177,7 @@ const createCheckbox = (decorator,contentEditable)  => {
 
 
 
-const createCheckboxList = (item, contentEditable) => {
+const createCheckboxList = (lists, contentEditable) => {
   listDecoratorElement = document.createElement("ul");
   listDecoratorElement.classList.add("checkbox-list");
 
@@ -189,10 +190,10 @@ const createCheckboxList = (item, contentEditable) => {
   listDecoratorElement.appendChild(textElement);
 
   listDecoratorElement.appendChild(document.createTextNode("("));
-  LIST_DECORATORS.forEach(function(item, index) {
+  lists.forEach(function(item, index) {
     let checkbox = createCheckbox(item, contentEditable);
     listDecoratorElement.appendChild(checkbox);
-    if (index < LIST_DECORATORS.length - 1) {
+    if (index < lists.length - 1) {
       listDecoratorElement.appendChild(document.createTextNode(", "));
     }
   });
