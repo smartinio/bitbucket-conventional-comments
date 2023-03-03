@@ -1,0 +1,31 @@
+name: yarn
+
+on:
+  workflow_call:
+    inputs:
+      cmd:
+        required: true
+        type: string
+      artifact-name:
+        required: false
+        type: string
+      artifact-path:
+        required: false
+        type: string
+
+jobs:
+  runner:
+    environment: Dev
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm i -g yarn
+      - run: yarn install --frozen-lockfile
+      - run: ${{ inputs.cmd }}
+      - uses: actions/upload-artifact@v3
+        if: inputs.artifact-path && (success() || failure())
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ${{ inputs.artifact-path }}
+          if-no-files-found: ignore

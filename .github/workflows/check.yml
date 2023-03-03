@@ -1,0 +1,36 @@
+name: Check
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  style:
+    uses: ./.github/workflows/yarn.yaml
+    with:
+      cmd: yarn check:style
+
+  unit-tests:
+    uses: ./.github/workflows/yarn.yaml
+    with:
+      cmd: yarn test:unit
+
+  e2e-tests:
+    environment: Dev
+    runs-on: ubuntu-latest
+    env:
+      CYPRESS_BITBUCKET_EMAIL: ${{ secrets.CYPRESS_BITBUCKET_EMAIL }}
+      CYPRESS_BITBUCKET_PASSWORD: ${{ secrets.CYPRESS_BITBUCKET_PASSWORD }}
+      CYPRESS_PULL_REQUEST_URL: ${{ secrets.CYPRESS_PULL_REQUEST_URL }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm i -g yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn test:e2e
+      - uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+          name: videos
+          path: '**/cypress/videos/'
+          if-no-files-found: ignore
