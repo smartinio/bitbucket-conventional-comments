@@ -3,8 +3,8 @@ name: Publish
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
-    paths: [ manifest.json ]
+    branches: [master]
+    paths: [manifest.json]
 
 jobs:
   publish:

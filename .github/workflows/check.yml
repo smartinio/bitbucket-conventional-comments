@@ -3,6 +3,8 @@ name: Check
 on:
   workflow_dispatch:
   push:
+  pull_request_target:
+    branches: [master]
 
 jobs:
   style:
@@ -31,6 +33,6 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: success() || failure()
         with:
-          name: videos
-          path: '**/cypress/videos/'
+          name: cypress-output
+          path: '**/cypress/out/'
           if-no-files-found: ignore

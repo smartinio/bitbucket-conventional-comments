@@ -9,7 +9,7 @@ export const warnAboutUnconventionalComments = ({ controls, contentEditable }) =
   if (editor.classList.contains(classes.bitbucket.reply)) {
     return // don't warn on replies
   }
-  
+
   if (editor.classList.contains(classes.bitbucket.edit)) {
     return // don't warn on edits
   }

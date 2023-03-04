@@ -1,8 +1,8 @@
 body {
-    min-width: 200px;
+  min-width: 200px;
 }
 .toggle-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
