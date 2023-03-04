@@ -1,24 +1,12 @@
-name: Check
-
 on:
-  workflow_dispatch:
-  push:
-    branches: [master]
-  pull_request_target:
-    branches: [master]
+  workflow_call:
 
 jobs:
-  style:
-    uses: ./.github/workflows/yarn.yaml
-    with:
-      cmd: yarn check:style
-
-  unit-tests:
+  unit:
     uses: ./.github/workflows/yarn.yaml
     with:
       cmd: yarn test:unit
-
-  e2e-tests:
+  e2e:
     environment: Dev
     runs-on: ubuntu-latest
     env:

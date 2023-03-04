@@ -1,0 +1,8 @@
+on:
+  workflow_call:
+
+jobs:
+  check:
+    uses: ./.github/workflows/yarn.yaml
+    with:
+      cmd: yarn check:style
