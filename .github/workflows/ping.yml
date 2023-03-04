@@ -1,9 +1,9 @@
-name: Ping
+name: ping
 
 on:
   workflow_dispatch:
   schedule:
-    - cron:  '0 13 1 * *'
+    - cron: '0 13 * * *'
 
 jobs:
   ping:

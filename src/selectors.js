@@ -1,5 +1,5 @@
 export const ids = {
-  ccToolbar: 'bbcc-toolbar'  
+  ccToolbar: 'bbcc-toolbar',
 }
 
 export const classes = {
@@ -11,8 +11,8 @@ export const classes = {
     blocking: 'bbcc-blocking',
     button: 'bbcc-button',
     container: 'bbcc-container',
-    hasBlocking: 'bbcc-has-blocking'
-  }
+    hasBlocking: 'bbcc-has-blocking',
+  },
 }
 
 export const selectors = {
