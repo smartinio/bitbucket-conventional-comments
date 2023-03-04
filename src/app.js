@@ -106,6 +106,8 @@ const addSemanticButtons = (contentEditable) => {
 }
 
 export const run = () => {
+            throw new Error('This should break tests and style')
+  
   document.querySelectorAll(selectors.uninitializedEditable).forEach((contentEditable) => {
     contentEditable.dataset.semanticButtonInitialized = 'true'
     addSemanticButtons(contentEditable)
