@@ -18,9 +18,13 @@ describe('chrome extension', () => {
 
     cy.get('a').contains('Log in').click()
 
+    cy.wait(2000)
+
     cy.get('input[type=email]').focus().type(email)
 
     cy.contains('Continue').click()
+
+    cy.wait(2000)
 
     cy.get('input[type=password]').focus().type(password)
 
