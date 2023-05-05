@@ -1,16 +1,19 @@
 import { semanticLabels } from './labels.js'
+import { selectors } from './selectors.js'
 
-const validPrefixes = Object.values(semanticLabels).flatMap(({ text }) => [
-  `**${text}:** `,
-  `**${text} (non-blocking):** `,
-])
+const labels = Object.values(semanticLabels)
+  .map(({ text }) => text)
+  .join('|')
+const regex = `^((?:\\*\\*)?(${labels})(?:\\s\\((.*)\\))?:(?:\\*\\*)?)(.*)$` // ^\*\*(praise|nitpick|suggestion|issue|todo|question|thought|chore|note)(?:\s?\(([\w\s,]+)\))?:\*\*\s(.*)$
+
+export const getConventionalCommentPart = (comment) => {
+  const regexObj = new RegExp(regex, 'gmi')
+  return regexObj.exec(comment)
+}
 
 export const getConventionalCommentPrefix = (comment) => {
-  for (const validPrefix of validPrefixes) {
-    if (comment.startsWith(validPrefix)) {
-      return validPrefix
-    }
-  }
+  let regExpExecArray = getConventionalCommentPart(comment)
+  return regExpExecArray?.at(1) || ''
 }
 
 export const createClipboardReset = async () => {
@@ -35,11 +38,12 @@ export const copyToClipboard = async (text) => {
 }
 
 export const selectMatchingTextNode = (contentEditable, text) => {
-  const span = contentEditable.querySelector('pre span.cm-m-markdown.cm-strong')
-  if (span.innerText !== text) {
+  const span = contentEditable.querySelector(selectors.selectMatchingText)
+  if (span.innerText.trim() !== text) {
     return
   }
   const textNode = _findTextNode(span.childNodes)
+
   const range = document.createRange()
   const selection = window.getSelection()
   range.selectNode(textNode)
@@ -48,7 +52,7 @@ export const selectMatchingTextNode = (contentEditable, text) => {
 }
 
 export const setCursorPosition = (contentEditable, position) => {
-  const { textNode, offset } = _getTextNodeOffset(contentEditable, position)
+  let { textNode, offset } = _getTextNodeOffset(contentEditable, position)
   const range = document.createRange()
   const selection = window.getSelection()
   range.setStart(textNode, offset)
@@ -57,13 +61,21 @@ export const setCursorPosition = (contentEditable, position) => {
   selection.addRange(range)
 }
 
+export const setCursorToEnd = (contentEditable) => {
+  window.getSelection().selectAllChildren(contentEditable)
+  window.getSelection().collapseToEnd()
+}
+
 const _getTextNodeOffset = (contentEditable, position) => {
-  const spans = contentEditable.querySelectorAll('pre span.cm-m-markdown')
+  const spans = contentEditable.querySelectorAll(selectors.textNodeOffset)
   const spanIndex = position === 'end' ? spans.length - 1 : 0
   const span = spans[spanIndex]
-  const childNodes = (span || contentEditable.querySelector('pre')).childNodes
-  const textNode = _findTextNode(childNodes)
-  const offset = position === 'start' ? 0 : textNode.length
+  const childNodes = (span || contentEditable.querySelector(selectors.textNodeEmpty))?.childNodes
+  let textNode = _findTextNode(childNodes)
+  if (!textNode) {
+    textNode = contentEditable?.firstChild || contentEditable
+  }
+  const offset = position === 'start' ? 0 : textNode.length ?? 0
 
   return { textNode, offset }
 }

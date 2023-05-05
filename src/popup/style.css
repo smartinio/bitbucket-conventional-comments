@@ -6,3 +6,20 @@ body {
   justify-content: space-between;
   align-items: center;
 }
+
+.bbcc-popup .bbcc-settings .text-container label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.bbcc-popup .bbcc-settings .text-container input[type='text'] {
+  display: block;
+  width: 88%;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}

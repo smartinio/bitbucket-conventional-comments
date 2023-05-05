@@ -9,6 +9,12 @@
       "css": ["src/style.css"],
       "js": ["src/index.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://bitbucket.org/**/*/pull-requests/*"],
+      "css": ["src/style.css"],
+      "js": ["src/index.js"],
+      "run_at": "document_idle"
     }
   ],
   "web_accessible_resources": [

@@ -1,6 +1,6 @@
 import { semanticLabels } from '../labels.js'
 import { state } from '../state.js'
-import { settings } from '../settings.js'
+import { DECORATORS_LIST_ID, LIST_DECORATORS, settings } from '../settings.js'
 
 const createCheckbox = async ({ label, defaultValue }) => {
   let checked = await state.get(label)
@@ -13,6 +13,35 @@ const createCheckbox = async ({ label, defaultValue }) => {
   input.checked = checked
   input.onchange = (e) => state.set(label, e.target.checked)
   return input
+}
+
+function getOnchangeInput(id) {
+  return (e) => {
+    state.set(id, e.target.value)
+  }
+}
+
+const createTextBox = async ({ id, description, defaultValue }) => {
+  let value = await state.get(id)
+  if (value === undefined) {
+    state.set(id, defaultValue)
+    value = defaultValue
+  }
+  const input = document.createElement('input')
+  input.type = 'text'
+  input.id = id
+  input.value = value
+  input.addEventListener('input', getOnchangeInput(id))
+
+  const label = document.createElement('label')
+  label.textContent = description
+  label.setAttribute('for', id)
+
+  const container = document.createElement('div')
+  container.classList.add('text-container')
+  container.appendChild(label)
+  container.appendChild(input)
+  return container
 }
 
 const setup = async () => {
@@ -35,12 +64,21 @@ const setup = async () => {
     settingsContainer.appendChild(toggleContainer)
   })
 
+  // Add settings :
+  settingsContainer.appendChild(
+    await createTextBox({
+      id: DECORATORS_LIST_ID,
+      description: 'List of decorators (separated with ",")',
+      defaultValue: LIST_DECORATORS.join(','),
+    })
+  )
+
   // Labels
   labelConfigs.map(async ([label, config]) => {
     const toggleContainer = document.createElement('div')
     const iconContainer = document.createElement('div')
     const labelContainer = document.createElement('span')
-    const checkbox = await createCheckbox({ label, defaultValue: true })
+    const checkbox = await createCheckbox({ label, defaultValue: config.defaultValue })
 
     iconContainer.innerHTML = config.icon
     labelContainer.innerText = label
