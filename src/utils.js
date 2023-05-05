@@ -1,18 +1,19 @@
-import {semanticLabels} from './labels.js'
-import {selectors} from "./selectors.js";
+import { semanticLabels } from './labels.js'
+import { selectors } from './selectors.js'
 
-const labels = Object.values(semanticLabels).map(({ text }) => text).join('|');
-const regex = `^((?:\\*\\*)?(${labels})(?:\\s\\((.*)\\))?:(?:\\*\\*)?)(.*)$`; // ^\*\*(praise|nitpick|suggestion|issue|todo|question|thought|chore|note)(?:\s?\(([\w\s,]+)\))?:\*\*\s(.*)$
+const labels = Object.values(semanticLabels)
+  .map(({ text }) => text)
+  .join('|')
+const regex = `^((?:\\*\\*)?(${labels})(?:\\s\\((.*)\\))?:(?:\\*\\*)?)(.*)$` // ^\*\*(praise|nitpick|suggestion|issue|todo|question|thought|chore|note)(?:\s?\(([\w\s,]+)\))?:\*\*\s(.*)$
 
-
-export const getConventionalCommentPart = comment => {
-  const regexObj = new RegExp(regex, 'gmi');
-  return regexObj.exec(comment);
-};
+export const getConventionalCommentPart = (comment) => {
+  const regexObj = new RegExp(regex, 'gmi')
+  return regexObj.exec(comment)
+}
 
 export const getConventionalCommentPrefix = (comment) => {
-  let regExpExecArray = getConventionalCommentPart(comment);
-  return regExpExecArray?.at(1) || '';
+  let regExpExecArray = getConventionalCommentPart(comment)
+  return regExpExecArray?.at(1) || ''
 }
 
 export const createClipboardReset = async () => {
@@ -37,11 +38,11 @@ export const copyToClipboard = async (text) => {
 }
 
 export const selectMatchingTextNode = (contentEditable, text) => {
-  const span = contentEditable.querySelector(selectors.selectMatchingText);
+  const span = contentEditable.querySelector(selectors.selectMatchingText)
   if (span.innerText.trim() !== text) {
     return
   }
-  const textNode = _findTextNode(span.childNodes);
+  const textNode = _findTextNode(span.childNodes)
 
   const range = document.createRange()
   const selection = window.getSelection()
@@ -61,10 +62,9 @@ export const setCursorPosition = (contentEditable, position) => {
 }
 
 export const setCursorToEnd = (contentEditable) => {
-  window.getSelection().selectAllChildren(contentEditable);
+  window.getSelection().selectAllChildren(contentEditable)
   window.getSelection().collapseToEnd()
 }
-
 
 const _getTextNodeOffset = (contentEditable, position) => {
   const spans = contentEditable.querySelectorAll(selectors.textNodeOffset)
@@ -73,9 +73,9 @@ const _getTextNodeOffset = (contentEditable, position) => {
   const childNodes = (span || contentEditable.querySelector(selectors.textNodeEmpty))?.childNodes
   let textNode = _findTextNode(childNodes)
   if (!textNode) {
-    textNode = contentEditable?.firstChild || contentEditable;
+    textNode = contentEditable?.firstChild || contentEditable
   }
-  const offset = position === 'start' ? 0 : textNode.length ?? 0;
+  const offset = position === 'start' ? 0 : textNode.length ?? 0
 
   return { textNode, offset }
 }

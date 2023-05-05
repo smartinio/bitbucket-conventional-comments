@@ -9,7 +9,7 @@ export const state = {
   },
   async getAll() {
     return new Promise((resolve) => {
-      chrome.storage.sync.get(null,(result) => resolve(result))
+      chrome.storage.sync.get(null, (result) => resolve(result))
     })
   },
   subscribe(value, notify) {

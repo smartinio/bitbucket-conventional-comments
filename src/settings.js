@@ -1,7 +1,7 @@
 export const UNCONVENTIONAL_WARNING = 'unconventionalWarning'
 
-export const  DECORATORS_SELECTOR = 'decoratorSelector';
-export const  DECORATORS_LIST_ID = 'decoratorList';
+export const DECORATORS_SELECTOR = 'decoratorSelector'
+export const DECORATORS_LIST_ID = 'decoratorList'
 export const settings = {
   [UNCONVENTIONAL_WARNING]: {
     description: 'Warn before sending unconventional comment',
@@ -13,5 +13,4 @@ export const settings = {
   },
 }
 
-
-export const LIST_DECORATORS = ['non-blocking', 'blocking', 'if-minor', 'todo-later', 'test', 'ui'];
+export const LIST_DECORATORS = ['non-blocking', 'blocking', 'if-minor', 'todo-later', 'test', 'ui']

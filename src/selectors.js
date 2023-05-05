@@ -43,6 +43,6 @@ export const selectors_cloud = {
   textNodeEmpty: 'p',
 }
 
-export const selectors = (window.location.hostname === 'bitbucket.org')? selectors_cloud : selectors_server;
-console.warn('Location ', (window.location.hostname === 'bitbucket.org'), selectors);
-
+export const selectors =
+  window.location.hostname === 'bitbucket.org' ? selectors_cloud : selectors_server
+console.warn('Location ', window.location.hostname === 'bitbucket.org', selectors)

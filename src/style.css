@@ -1,24 +1,21 @@
 #bbcc-toolbar {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-content: space-between;
-    align-items: flex-start;
-
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: space-between;
+  align-items: flex-start;
 }
 
-
-
 #bbcc-toolbar .bbcc-button {
-    background: transparent;
-    border: none;
-    color: #42526e;
-    outline: 0;
-    cursor: pointer;
-    height: 32px;
-    justify-content: center;
-    display: flex;
+  background: transparent;
+  border: none;
+  color: #42526e;
+  outline: 0;
+  cursor: pointer;
+  height: 32px;
+  justify-content: center;
+  display: flex;
 }
 
 #bbcc-toolbar .bbcc-button svg {
@@ -41,103 +38,92 @@
   color: red;
 }
 
-
-
 #bbcc-toolbar ul.checkbox-list {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0;
-    padding: 0;
-    line-height: 2em;
-    font-size: 1.2em;
-    font-weight: bold;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  line-height: 2em;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
-
 #bbcc-toolbar ul.checkbox-list p {
-    display: inline-block;
-    padding: 0 0.5em;
+  display: inline-block;
+  padding: 0 0.5em;
 }
 
 #bbcc-toolbar li.checkbox-item {
-    margin: 0;
-    display: inline-block;
-    padding: 0;
-    cursor: pointer;
+  margin: 0;
+  display: inline-block;
+  padding: 0;
+  cursor: pointer;
 }
 
 #bbcc-toolbar li.checkbox-item label {
-    cursor: pointer;
+  cursor: pointer;
 }
 
-#bbcc-toolbar ul.checkbox-list input[type="checkbox"] {
-    width: 0.8em;
-    height: 0.8em;
-    margin: 0.4em 0.2em 0 0.1em;
+#bbcc-toolbar ul.checkbox-list input[type='checkbox'] {
+  width: 0.8em;
+  height: 0.8em;
+  margin: 0.4em 0.2em 0 0.1em;
 }
-
-
-
 
 #bbcc-toolbar .bbcc-container .bbcc-button:hover:after {
-    opacity: 0.9;
-    transition: all 0.1s ease 0.5s;
-    visibility: visible;
+  opacity: 0.9;
+  transition: all 0.1s ease 0.5s;
+  visibility: visible;
 }
 
 #bbcc-toolbar .bbcc-container .bbcc-button:after {
-    content: attr(data-title);
-    background-color: #212221;
-    color: #fff;
-    font-size: 18px;
-    position: absolute;
-    padding: 1px 5px 2px 5px;
-    line-height: 18px;
-    bottom: 34px;
-    left: -4px;
-    white-space: pre-wrap;
-    box-shadow: 1px 1px 3px #8b8888;
-    opacity: 0;
-    border: 1px solid #000000;
-    border-radius: 4px;
-    z-index: 99999;
-    visibility: hidden;
-    width: 600px
+  content: attr(data-title);
+  background-color: #212221;
+  color: #fff;
+  font-size: 18px;
+  position: absolute;
+  padding: 1px 5px 2px 5px;
+  line-height: 18px;
+  bottom: 34px;
+  left: -4px;
+  white-space: pre-wrap;
+  box-shadow: 1px 1px 3px #8b8888;
+  opacity: 0;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  z-index: 99999;
+  visibility: hidden;
+  width: 600px;
 }
 
 #bbcc-toolbar .bbcc-container.bbcc-has-blocking {
-    width: 30px;
-    display: block !important;
-    overflow: hidden;
-    height: 30px;
+  width: 30px;
+  display: block !important;
+  overflow: hidden;
+  height: 30px;
 }
 
 #bbcc-toolbar .bbcc-container .bbcc-button {
-    width: 32px;
-    display: block;
-    padding-left: 6px;
+  width: 32px;
+  display: block;
+  padding-left: 6px;
 }
 
 #bbcc-toolbar .bbcc-container.bbcc-has-blocking:hover {
-    width: 64px;
-    display: flex !important;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-end;
-    overflow: visible;
+  width: 64px;
+  display: flex !important;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  overflow: visible;
 }
 
 #bbcc-toolbar .bbcc-container.bbcc-has-blocking:hover > div {
-    width: 30px;
-    display: flex;
+  width: 30px;
+  display: flex;
 }
 
 #bbcc-toolbar .bbcc-container.bbcc-has-blocking:hover .bbcc-button {
-    display: inline-block
+  display: inline-block;
 }
-
-
-
-
-

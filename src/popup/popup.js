@@ -1,6 +1,6 @@
 import { semanticLabels } from '../labels.js'
 import { state } from '../state.js'
-import {DECORATORS_LIST_ID, LIST_DECORATORS, settings} from '../settings.js'
+import { DECORATORS_LIST_ID, LIST_DECORATORS, settings } from '../settings.js'
 
 const createCheckbox = async ({ label, defaultValue }) => {
   let checked = await state.get(label)
@@ -17,8 +17,8 @@ const createCheckbox = async ({ label, defaultValue }) => {
 
 function getOnchangeInput(id) {
   return (e) => {
-    state.set(id, e.target.value);
-  };
+    state.set(id, e.target.value)
+  }
 }
 
 const createTextBox = async ({ id, description, defaultValue }) => {
@@ -27,21 +27,21 @@ const createTextBox = async ({ id, description, defaultValue }) => {
     state.set(id, defaultValue)
     value = defaultValue
   }
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.id = id;
-  input.value = value;
-  input.addEventListener('input', getOnchangeInput(id));
+  const input = document.createElement('input')
+  input.type = 'text'
+  input.id = id
+  input.value = value
+  input.addEventListener('input', getOnchangeInput(id))
   // Créer un élément label pour le champ d'entrée de texte
-  const label = document.createElement("label");
-  label.textContent = description;
-  label.setAttribute("for", id);
+  const label = document.createElement('label')
+  label.textContent = description
+  label.setAttribute('for', id)
 
   // Ajouter l'élément label et l'élément input au div container
-  const container = document.createElement("div");
-  container.classList.add('text-container');
-  container.appendChild(label);
-  container.appendChild(input);
+  const container = document.createElement('div')
+  container.classList.add('text-container')
+  container.appendChild(label)
+  container.appendChild(input)
   return container
 }
 
@@ -66,11 +66,13 @@ const setup = async () => {
   })
 
   // Add settings :
-  settingsContainer.appendChild(await createTextBox({
-    id: DECORATORS_LIST_ID,
-    description: 'List of decorators (separated with ",")',
-    defaultValue: LIST_DECORATORS.join(',')
-  }))
+  settingsContainer.appendChild(
+    await createTextBox({
+      id: DECORATORS_LIST_ID,
+      description: 'List of decorators (separated with ",")',
+      defaultValue: LIST_DECORATORS.join(','),
+    })
+  )
 
   // Labels
   labelConfigs.map(async ([label, config]) => {

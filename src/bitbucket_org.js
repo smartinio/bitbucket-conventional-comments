@@ -8,4 +8,4 @@
   nonCancelButton: 'button:not(.comment-editor-cancel)',
 }*/
 
-console.log('Be on bitbucket object');
+console.log('Be on bitbucket object')
