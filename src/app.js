@@ -47,7 +47,7 @@ async function updateConventionCommentOnTextBox(contentEditable) {
 const createClickHandler = ({ contentEditable, label, blocking }) => {
   return async (e) => {
     e.preventDefault()
-    updateCurentLabel(label)
+    curentLabel = label
     const semanticConfig = semanticLabels[curentLabel]
     if (semanticConfig.hasBlockingOption) {
       addDecorator(blocking ? 'blocking' : 'non-blocking')
@@ -196,6 +196,9 @@ const createCheckboxList = (lists, contentEditable) => {
     currentComment?.at(3)?.split(',')?.forEach(addDecorator)
   }
   let textElement = createLabelElement(curentLabel)
+  textElement.addEventListener('click', async function () {
+    await updateConventionCommentOnTextBox(contentEditable)
+  })
   listDecoratorElement.appendChild(textElement)
 
   listDecoratorElement.appendChild(document.createTextNode('('))
@@ -222,6 +225,7 @@ const createCheckboxList = (lists, contentEditable) => {
 const createLabelElement = (text) => {
   LabelTextElement = document.createElement('p')
   LabelTextElement.textContent = text
+
   return LabelTextElement
 }
 
