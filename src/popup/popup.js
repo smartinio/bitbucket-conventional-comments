@@ -32,12 +32,11 @@ const createTextBox = async ({ id, description, defaultValue }) => {
   input.id = id
   input.value = value
   input.addEventListener('input', getOnchangeInput(id))
-  // Créer un élément label pour le champ d'entrée de texte
+
   const label = document.createElement('label')
   label.textContent = description
   label.setAttribute('for', id)
 
-  // Ajouter l'élément label et l'élément input au div container
   const container = document.createElement('div')
   container.classList.add('text-container')
   container.appendChild(label)
