@@ -7,6 +7,7 @@ import {
   getConventionalCommentPrefix,
   selectMatchingTextNode,
   setCursorPosition,
+  setCursorToEnd
 } from './utils.js'
 import {warnAboutUnconventionalComments} from './features/warnAboutUnconventionalComments.js'
 import {DECORATORS_LIST_ID, DECORATORS_SELECTOR, LIST_DECORATORS} from "./settings.js";
@@ -16,26 +17,30 @@ let curentLabel = 'suggestion';
 const decoratorsList = [];
 let listDecoratorElement;
 
+
 async function updateConventionCommentOnTextBox(contentEditable) {
   const semanticConfig = semanticLabels[curentLabel]
   if (!semanticConfig) {
     return;
   }
-  const semanticComment = `**${semanticConfig.text}${getDecorators()}:** `
+  const semanticComment = `**${semanticConfig.text}${getDecorators()}:**`;
+
   const currentPrefix = getConventionalCommentPrefix(contentEditable.innerText)
   const resetClipboard = await createClipboardReset()
 
   if (currentPrefix) {
     // trimming because the existing textNode in the DOM does not contain the space
     selectMatchingTextNode(contentEditable, currentPrefix.trim())
-    await copyToClipboard(semanticComment.trim())
+    await copyToClipboard(semanticComment)
   } else {
     setCursorPosition(contentEditable, 'start')
     await copyToClipboard(semanticComment)
   }
 
   document.execCommand('paste')
-  setCursorPosition(contentEditable, 'end')
+  document.execCommand("insertText", false, ' ');
+  setCursorToEnd(contentEditable);
+
   await resetClipboard();
 }
 
@@ -128,7 +133,8 @@ const showHideDecoratorList = shouldShow => {
 };
 
 const addSemanticButtons = async (contentEditable) => {
-  const editorWrapper = contentEditable.closest(selectors.editorWrapper)
+  const childEditorWrapper = contentEditable.closest(selectors.editorWrapper)
+  const editorWrapper = childEditorWrapper.parentElement;
   const controls = editorWrapper.querySelector(selectors.controls)
   const toolbar = editorWrapper.querySelector(selectors.toolbar)
   const cancelButton = editorWrapper.querySelector(selectors.cancelButton)
@@ -138,8 +144,8 @@ const addSemanticButtons = async (contentEditable) => {
     createButtonPair({contentEditable, toolbar, ccToolbar, label})
   });
 
-  const listDecorator = await state.get(DECORATORS_LIST_ID);
-  ccToolbar.appendChild(createCheckboxList(listDecorator.split(','), contentEditable));
+  const listDecorator = await state.get(DECORATORS_LIST_ID) || LIST_DECORATORS;
+  ccToolbar.appendChild(createCheckboxList(listDecorator?.split(','), contentEditable));
 
   warnAboutUnconventionalComments({controls, contentEditable})
 };
@@ -184,7 +190,7 @@ const createCheckboxList = (lists, contentEditable) => {
   const currentComment = getConventionalCommentPart(contentEditable.innerText);
   if (currentComment && currentComment.at(2)) {
     curentLabel = currentComment.at(2);
-    currentComment.at(3).split(',').forEach(addDecorator);
+    currentComment?.at(3)?.split(',')?.forEach(addDecorator);
   }
   let textElement = createLabelElement(curentLabel);
   listDecoratorElement.appendChild(textElement);
@@ -222,9 +228,9 @@ const createLabelElement = text => {
 };
 
 const updateCurentLabel = (label) => {
-  curentLabel = label;
+  curentLabel = label  || '';
   clearDecoratorsList();
-  LabelTextElement.textContent = label;
+  LabelTextElement.textContent = label || '';
 };
 
 function handleDecoratorsExceptions(decorator) {
@@ -274,9 +280,10 @@ const updateCheckbox = (decorator, checked) => {
 
 
 export const run = () => {
+
   document.querySelectorAll(selectors.uninitializedEditable).forEach((contentEditable) => {
     contentEditable.dataset.semanticButtonInitialized = 'true'
-    addSemanticButtons(contentEditable)
+    addSemanticButtons(contentEditable);
   })
   setTimeout(run, 300)
 }

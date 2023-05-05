@@ -121,8 +121,16 @@
 
 #bbcc-toolbar .bbcc-container.bbcc-has-blocking:hover {
     width: 64px;
-    display: inline-block !important;
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
     overflow: visible;
+}
+
+#bbcc-toolbar .bbcc-container.bbcc-has-blocking:hover > div {
+    width: 30px;
+    display: flex;
 }
 
 #bbcc-toolbar .bbcc-container.bbcc-has-blocking:hover .bbcc-button {
