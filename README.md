@@ -1,5 +1,8 @@
 # bitbucket-conventional-comments
 
+> [!WARNING]
+> This extension is not actively maintained by the author and may not work properly on newer versions of Bitbucket. PRs are welcome.
+
 Based on [this extension](https://gitlab.com/conventionalcomments/conventional-comments-button/-/tree/master) for Gitlab. Adapted to Bitbucket.
 
 ![](preview.gif)
