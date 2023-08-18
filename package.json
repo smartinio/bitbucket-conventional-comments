@@ -3,7 +3,10 @@
   "version": "2.1.0",
   "main": "src/index.js",
   "repository": "git@github.com:smartinio/bitbucket-conventional-comments.git",
-  "author": ["Sam Martin <me@smartin.io>", "Emmanuel DE SAINT STEBAN <manu.dss@gmail.com>"],
+  "author": [
+    "Sam Martin <me@smartin.io>",
+    "Emmanuel DE SAINT STEBAN <manu.dss@gmail.com>"
+  ],
   "license": "MIT",
   "scripts": {
     "chores": "yarn style && yarn test:unit",

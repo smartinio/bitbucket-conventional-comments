@@ -7,20 +7,19 @@ Based on [this extension](https://gitlab.com/conventionalcomments/conventional-c
 
 ![Preview extension](preview.gif)
 
-
 ### What is this?
 
 Quality of life Chrome extension for teams/people who use [conventional comments.](https://conventionalcomments.org)
-"Bitbucket-Conventional-Comments" is a Chrome extension designed to enhance the commenting experience for teams and individuals who utilize the Conventional Comments standard in their coding practices. 
+"Bitbucket-Conventional-Comments" is a Chrome extension designed to enhance the commenting experience for teams and individuals who utilize the Conventional Comments standard in their coding practices.
 
-This extension simplifies the process of inserting conventional comment headers into your messages by providing dedicated buttons for this purpose. With additional features like the selector label button and decoration selectors, it enables customization of labels and decorators to align with your team's requirements. Thus, it is a valuable tool for promoting standardized communication and improving productivity in collaborative programming projects. 
+This extension simplifies the process of inserting conventional comment headers into your messages by providing dedicated buttons for this purpose. With additional features like the selector label button and decoration selectors, it enables customization of labels and decorators to align with your team's requirements. Thus, it is a valuable tool for promoting standardized communication and improving productivity in collaborative programming projects.
 
 The configurability provided by this extension ensures that it can seamlessly fit into your team's workflow and facilitate efficient and effective code review processes.
 
-On Bitbucket.org : 
+On Bitbucket.org :
 ![On Bitbucket.org : ](bitbucket_org.png)
 
-On Bitbucket Server : 
+On Bitbucket Server :
 ![On Bitbucket Server :](bitbucket_server.png)
 
 The [original license](https://gitlab.com/conventionalcomments/conventional-comments-button/-/blob/master/LICENSE) is MIT.

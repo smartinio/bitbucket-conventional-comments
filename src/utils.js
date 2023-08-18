@@ -40,7 +40,7 @@ export const copyToClipboard = async (text) => {
 export const selectMatchingTextNode = (contentEditable, text) => {
   const span = contentEditable.querySelector(selectors.selectMatchingText)
   if (!span?.innerText?.trim()?.includes(text?.trim())) {
-    return false;
+    return false
   }
   const textNode = _findTextNode(span.childNodes)
 
@@ -48,8 +48,8 @@ export const selectMatchingTextNode = (contentEditable, text) => {
   const selection = window.getSelection()
   range.selectNode(textNode)
   selection.removeAllRanges()
-  selection.addRange(range);
-  return true;
+  selection.addRange(range)
+  return true
 }
 
 export const setCursorPosition = (contentEditable, position) => {
