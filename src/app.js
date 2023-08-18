@@ -23,23 +23,28 @@ async function updateConventionCommentOnTextBox(contentEditable) {
   if (!semanticConfig) {
     return
   }
-  const semanticComment = `**${semanticConfig.text}${getDecorators()}:**`
+  let semanticComment = `**${semanticConfig.text}${getDecorators()}:**`
 
   const currentPrefix = getConventionalCommentPrefix(contentEditable.innerText)
-  const resetClipboard = await createClipboardReset()
+  const resetClipboard = await createClipboardReset();
 
+
+let isSelectingRange = false;
   if (currentPrefix) {
     // trimming because the existing textNode in the DOM does not contain the space
-    selectMatchingTextNode(contentEditable, currentPrefix.trim())
-    await copyToClipboard(semanticComment)
-  } else {
-    setCursorPosition(contentEditable, 'start')
-    await copyToClipboard(semanticComment)
+    isSelectingRange = selectMatchingTextNode(contentEditable, currentPrefix.trim());
   }
 
-  document.execCommand('paste')
-  document.execCommand('insertText', false, ' ')
-  setCursorToEnd(contentEditable)
+  if (!isSelectingRange) {
+    setCursorPosition(contentEditable, 'start');
+    semanticComment += ' ';
+  }
+
+  await copyToClipboard(semanticComment);
+  document.execCommand('paste');
+
+
+  setCursorToEnd(contentEditable);
 
   await resetClipboard()
 }

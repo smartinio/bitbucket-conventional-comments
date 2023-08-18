@@ -32,11 +32,11 @@ export const selectors_server = {
 export const selectors_cloud = {
   editor: 'div.akEditor',
   editorWrapper: 'div.akEditor',
-  toolbar: 'div[data-testid="ak-editor-main-toolbar"] > .css-1d31zfz',
+  toolbar: 'div[data-testid="ak-editor-main-toolbar"] > div[role="toolbar"] > div:last-child',
   controls: 'div[data-testid="ak-editor-secondary-toolbar"]',
   uninitializedEditable: `div[contenteditable='true']:not([data-semantic-button-initialized])`,
-  cancelButton: 'button.css-yv2ufd',
-  nonCancelButton: 'button:not(.css-yv2ufd)',
+  cancelButton: 'div[data-testid="ak-editor-secondary-toolbar"]  button:not([data-testid="comment-save-button"])',
+  nonCancelButton: 'div[data-testid="ak-editor-secondary-toolbar"]  button[data-testid="comment-save-button"]',
   selectMatchingText: 'p strong',
   regex: 'p strong',
   textNodeOffset: 'p strong',
@@ -45,4 +45,4 @@ export const selectors_cloud = {
 
 export const selectors =
   window.location.hostname === 'bitbucket.org' ? selectors_cloud : selectors_server
-console.warn('Location ', window.location.hostname === 'bitbucket.org', selectors)
+
