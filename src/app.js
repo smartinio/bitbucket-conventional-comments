@@ -155,8 +155,8 @@ const addSemanticButtons = async (contentEditable) => {
     createButtonPair({ contentEditable, toolbar, ccToolbar, label })
   })
 
-  const listDecorator = (await state.get(DECORATORS_LIST_ID)) || LIST_DECORATORS
-  ccToolbar.appendChild(createCheckboxList(listDecorator?.split(','), contentEditable))
+  const listDecorator = (await state.get(DECORATORS_LIST_ID)) || LIST_DECORATORS.join(',');
+  ccToolbar.appendChild(createCheckboxList(listDecorator?.split(','), contentEditable));
 
   warnAboutUnconventionalComments({ controls, contentEditable })
 }
