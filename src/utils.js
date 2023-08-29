@@ -52,14 +52,16 @@ export const selectMatchingTextNode = (contentEditable, text) => {
   return true
 }
 
-export const setCursorPosition = (contentEditable, position) => {
+export const selectPreviousText = (contentEditable, position) => {
   let { textNode, offset } = _getTextNodeOffset(contentEditable, position)
   const range = document.createRange()
   const selection = window.getSelection()
-  range.setStart(textNode, offset)
-  range.collapse(true)
+
+  range.selectNode(textNode)
   selection.removeAllRanges()
   selection.addRange(range)
+
+  return textNode?.textContent ? ' ' + textNode?.textContent : ' '
 }
 
 export const setCursorToEnd = (contentEditable) => {

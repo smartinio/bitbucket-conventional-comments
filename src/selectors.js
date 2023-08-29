@@ -41,7 +41,7 @@ export const selectors_cloud = {
     'div[data-testid="ak-editor-secondary-toolbar"]  button[data-testid="comment-save-button"]',
   selectMatchingText: 'p strong',
   regex: 'p strong',
-  textNodeOffset: 'p strong',
+  textNodeOffset: 'p',
   textNodeEmpty: 'p',
 }
 
