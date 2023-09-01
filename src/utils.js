@@ -39,8 +39,8 @@ export const copyToClipboard = async (text) => {
 
 export const selectMatchingTextNode = (contentEditable, text) => {
   const span = contentEditable.querySelector(selectors.selectMatchingText)
-  if (span.innerText.trim() !== text) {
-    return
+  if (!span?.innerText?.trim()?.includes(text?.trim())) {
+    return false
   }
   const textNode = _findTextNode(span.childNodes)
 
@@ -49,16 +49,19 @@ export const selectMatchingTextNode = (contentEditable, text) => {
   range.selectNode(textNode)
   selection.removeAllRanges()
   selection.addRange(range)
+  return true
 }
 
-export const setCursorPosition = (contentEditable, position) => {
+export const selectPreviousText = (contentEditable, position) => {
   let { textNode, offset } = _getTextNodeOffset(contentEditable, position)
   const range = document.createRange()
   const selection = window.getSelection()
-  range.setStart(textNode, offset)
-  range.collapse(true)
+
+  range.selectNode(textNode)
   selection.removeAllRanges()
   selection.addRange(range)
+
+  return textNode?.textContent ? ' ' + textNode?.textContent : ' '
 }
 
 export const setCursorToEnd = (contentEditable) => {

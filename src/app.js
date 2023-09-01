@@ -7,7 +7,7 @@ import {
   getConventionalCommentPart,
   getConventionalCommentPrefix,
   selectMatchingTextNode,
-  setCursorPosition,
+  selectPreviousText,
   setCursorToEnd,
 } from './utils.js'
 import { warnAboutUnconventionalComments } from './features/warnAboutUnconventionalComments.js'
@@ -15,7 +15,7 @@ import { DECORATORS_LIST_ID, DECORATORS_SELECTOR, LIST_DECORATORS } from './sett
 
 let LabelTextElement
 let curentLabel = 'suggestion'
-const decoratorsList = []
+const decoratorList = []
 let listDecoratorElement
 
 async function updateConventionCommentOnTextBox(contentEditable) {
@@ -23,22 +23,25 @@ async function updateConventionCommentOnTextBox(contentEditable) {
   if (!semanticConfig) {
     return
   }
-  const semanticComment = `**${semanticConfig.text}${getDecorators()}:**`
+  let semanticComment = `**${semanticConfig.text}${getDecorators()}:**`
 
   const currentPrefix = getConventionalCommentPrefix(contentEditable.innerText)
   const resetClipboard = await createClipboardReset()
 
+  let isSelectingRange = false
   if (currentPrefix) {
     // trimming because the existing textNode in the DOM does not contain the space
-    selectMatchingTextNode(contentEditable, currentPrefix.trim())
-    await copyToClipboard(semanticComment)
-  } else {
-    setCursorPosition(contentEditable, 'start')
-    await copyToClipboard(semanticComment)
+    isSelectingRange = selectMatchingTextNode(contentEditable, currentPrefix.trim())
   }
 
+  if (!isSelectingRange) {
+    const previousText = selectPreviousText(contentEditable, 'start')
+    semanticComment += previousText
+  }
+
+  await copyToClipboard(semanticComment)
   document.execCommand('paste')
-  document.execCommand('insertText', false, ' ')
+
   setCursorToEnd(contentEditable)
 
   await resetClipboard()
@@ -152,7 +155,7 @@ const addSemanticButtons = async (contentEditable) => {
     createButtonPair({ contentEditable, toolbar, ccToolbar, label })
   })
 
-  const listDecorator = (await state.get(DECORATORS_LIST_ID)) || LIST_DECORATORS
+  const listDecorator = (await state.get(DECORATORS_LIST_ID)) || LIST_DECORATORS.join(',')
   ccToolbar.appendChild(createCheckboxList(listDecorator?.split(','), contentEditable))
 
   warnAboutUnconventionalComments({ controls, contentEditable })
@@ -242,32 +245,32 @@ function handleDecoratorsExceptions(decorator) {
 
 const addDecorator = (decorator) => {
   if (!hasDecorator(decorator)) {
-    decoratorsList.push(decorator)
+    decoratorList.push(decorator)
     updateCheckbox(decorator, true)
   }
   handleDecoratorsExceptions(decorator)
 }
 
-const hasDecorator = (decorator) => !!decoratorsList.includes(decorator)
+const hasDecorator = (decorator) => !!decoratorList.includes(decorator)
 
 const removeDecorator = (decorator) => {
   if (hasDecorator(decorator)) {
-    decoratorsList.splice(decoratorsList.indexOf(decorator), 1)
+    decoratorList.splice(decoratorList.indexOf(decorator), 1)
     updateCheckbox(decorator, false)
   }
 }
 
 const getDecorators = () => {
-  return decoratorsList.length > 0
-    ? ` (${decoratorsList
+  return decoratorList.length > 0
+    ? ` (${decoratorList
         .sort((a, b) => LIST_DECORATORS.indexOf(a) - LIST_DECORATORS.indexOf(b))
         .join(',')})`
     : ''
 }
 
-const clearDecoratorsList = () => {
-  decoratorsList.forEach((decorator) => updateCheckbox(decorator, false))
-  decoratorsList.length = 0
+const cleardecoratorList = () => {
+  decoratorList.forEach((decorator) => updateCheckbox(decorator, false))
+  decoratorList.length = 0
 }
 
 const updateCheckbox = (decorator, checked) => {
